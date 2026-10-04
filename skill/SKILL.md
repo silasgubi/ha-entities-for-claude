@@ -1,9 +1,9 @@
 ---
 name: ha-entities
-description: Query the real entities of my Home Assistant instance (JSON registries in .storage + live states via REST API). USE whenever you need to know which entities exist, their exact entity_ids, areas, current states, or to validate entity_ids while planning or writing HA automations, dashboards and packages. Never guess entity_ids — look them up first.
+description: Query the real entities of my Home Assistant instance (JSON registries in .storage + live states via REST API). USE whenever you need to know which entities exist, their exact entity_ids, areas, current states, or to validate entity_ids while planning or writing HA automations, dashboards and packages. Never guess entity_ids: look them up first.
 ---
 
-# HA Entities — query Home Assistant entities
+# HA Entities: query Home Assistant entities
 
 Tool so you are never "in the dark" about the real HA entities when planning
 projects, writing automations or reviewing YAML.
@@ -13,16 +13,16 @@ projects, writing automations or reviewing YAML.
 HA's JSON "database" lives in `<config>/.storage` (reading is safe while HA
 is running; **NEVER write to these files**):
 
-- `core.entity_registry` — all entities, with name, platform, disabled/hidden, aliases
-- `core.device_registry` — devices (inherited area, manufacturer, model)
-- `core.area_registry` — areas
+- `core.entity_registry`: all entities, with name, platform, disabled/hidden, aliases
+- `core.device_registry`: devices (inherited area, manufacturer, model)
+- `core.area_registry`: areas
 
 Current states come from the REST API (`$HA_URL/api/states`, long-lived token).
 
 ## Configuration
 
 <!-- Fill these in for your setup. Keep the token OUT of this file if the
-     skill directory is ever shared — prefer setting HA_TOKEN in your shell
+     skill directory is ever shared: prefer setting HA_TOKEN in your shell
      profile or a local .env you don't commit. -->
 
 ```
@@ -63,9 +63,9 @@ Options combine: `--domain sensor --search temperature --states`.
   large, may be locked or corrupted, and it only knows about entities with
   recorded history. The JSON registries are the source of truth for *what
   exists*; the REST API for *current state*.
-- **Many entities are disabled** (often a third of them) — use
+- **Many entities are disabled** (often a third of them): use
   `--enabled-only` when hunting for entities to automate.
-- **Suffixes like `_2`, `_v2`, `_old`** usually mean duplicates — but not
+- **Suffixes like `_2`, `_v2`, `_old`** usually mean duplicates, but not
   always (integrations with two accounts create legitimate `_2` entities).
   Check the area/device before treating them as garbage.
 - Entities without their own `area_id` inherit the device's area (the script

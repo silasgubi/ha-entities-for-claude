@@ -1,6 +1,6 @@
 # 🏠🔍 HA Entities for Claude
 
-**Give Claude Code (or any coding agent) real knowledge of your Home Assistant entities — with one dependency-free Python script.**
+**Give Claude Code (or any coding agent) real knowledge of your Home Assistant entities, with one dependency-free Python script.**
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
 [![No dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](#)
@@ -9,7 +9,7 @@
 
 Ever asked an AI assistant to write a Home Assistant automation and watched it
 **invent entity IDs that don't exist**? `light.living_room_main` sounds
-plausible — but your actual entity is `light.sonoff_1000a1b2c3`. The AI can't
+plausible, but your actual entity is `light.sonoff_1000a1b2c3`. The AI can't
 know that. Unless you show it.
 
 This repo is the fix: a small script that reads Home Assistant's own JSON
@@ -50,11 +50,11 @@ under `<config>/.storage/`:
 | `core.area_registry` | Your rooms |
 
 Reading them is instant, needs no add-ons, and works even while HA is running.
-Entities that don't declare their own area inherit the device's area — the
+Entities that don't declare their own area inherit the device's area; the
 script resolves that join for you. For **live states**, the standard REST API
 (`/api/states`) fills the gap.
 
-> ⚠️ **Read-only!** Never write to `.storage` files — HA owns them.
+> ⚠️ **Read-only!** Never write to `.storage` files: HA owns them.
 > Reading is safe; writing can corrupt your instance.
 
 ---
@@ -90,7 +90,7 @@ python scripts/ha_entities.py --area kitchen     # everything in the kitchen
 python scripts/ha_entities.py --search motion    # fuzzy search everywhere
 ```
 
-**4. (Optional) live states** — create a long-lived token at
+**4. (Optional) live states**: create a long-lived token at
 `http://your-ha:8123/profile/security`, then:
 
 ```bash
@@ -121,14 +121,14 @@ YAML**, automatically.
    cp scripts/ha_entities.py ~/.claude/skills/ha-entities/scripts/
    ```
 
-2. Edit `~/.claude/skills/ha-entities/SKILL.md` — fill in your paths in the
+2. Edit `~/.claude/skills/ha-entities/SKILL.md`: fill in your paths in the
    **Configuration** section (and keep your token in an env var, not in the
    file).
 
 3. That's it. Next time you ask Claude Code to *"write an automation that
    turns off the kitchen lights when there's no motion"*, it will query your
    real registry, find `binary_sensor.kitchen_presence` and
-   `light.kitchen_spots`, verify they're enabled and available — and only
+   `light.kitchen_spots`, verify they're enabled and available, and only
    then write the YAML.
 
 The skill's `description` field tells Claude *when* to use it ("whenever you
@@ -171,7 +171,7 @@ out to be overkill. What survived is what actually mattered day to day:
   sometimes they're legitimate (an integration with two accounts). Check the
   device/area before deleting anything.
 - **Friendly names are for humans, entity_ids are for YAML.** An AI assistant
-  needs both, plus the aliases users say out loud — that's why the script
+  needs both, plus the aliases users say out loud, which is why the script
   searches all of them.
 
 ---
@@ -188,7 +188,7 @@ prompt template you get an `exposed_entities` variable:
 ### Area: {{ entity.area_name or 'No area' }}
 {% endif %}
 - {{ entity.name }} ({{ entity.entity_id }}) [{{ entity.state }}]
-  {%- if entity.aliases %} — aliases: {{ entity.aliases | join(', ') }}{% endif %}
+  {%- if entity.aliases %}, aliases: {{ entity.aliases | join(', ') }}{% endif %}
 {% endfor %}{% endraw %}
 ```
 
@@ -199,25 +199,25 @@ reliable. Control what's listed via **Settings → Voice assistants → Expose**
 
 ## 🔐 Security notes
 
-- The long-lived token grants full API access — treat it like a password.
+- The long-lived token grants full API access: treat it like a password.
   Keep it in an environment variable or a local `.env`; never commit it.
 - `.storage` files contain no passwords, but they do reveal your device
-  inventory — don't publish raw dumps.
+  inventory: don't publish raw dumps.
 - Everything here is **read-only** against HA. The script never calls a
   service or writes anything.
 
 ## 🤝 Alternatives
 
-- [Home Assistant MCP integrations](https://www.home-assistant.io/integrations/mcp_server/) —
+- [Home Assistant MCP integrations](https://www.home-assistant.io/integrations/mcp_server/):
   richer (can call services), but requires MCP setup and a running server.
   This repo's approach is deliberately simpler: one file, stdlib only, works
   offline against a file share, easy to audit.
-- `homeassistant.exposed_entities` in templates — only inside HA itself (see
+- `homeassistant.exposed_entities` in templates: only inside HA itself (see
   the bonus section above).
 
 ## 📄 License
 
-[MIT](LICENSE) — do whatever you want, no warranty.
+[MIT](LICENSE). Do whatever you want, no warranty.
 
 ---
 
